@@ -1,17 +1,19 @@
 import Link from 'next/link';
-import { ArrowRight, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { ArrowRight, ChevronRight } from 'lucide-react';
+
+import { HeroHeader } from './header';
+import { Button } from '@/components/ui/button';
 import { TextEffect } from '@/components/ui/text-effect';
 import { AnimatedGroup } from '@/components/ui/animated-group';
-import { HeroHeader } from './header';
-import ArcjetLogo from '../../../../../public/arcjet.png';
-import KindeLogo from '../../../../../public/kinde.png';
-import MotionLogo from '../../../../../public/motion.png';
+
 import NeonLogo from '../../../../../public/neon.png';
 import OrpcLogo from '../../../../../public/orpc.webp';
+import KindeLogo from '../../../../../public/kinde.png';
+import ArcjetLogo from '../../../../../public/arcjet.png';
+import MotionLogo from '../../../../../public/motion.png';
 import PrismaLogo from '../../../../../public/prisma.svg';
-import VercelLogo from '../../../../../public/vercel.svg'
+import VercelLogo from '../../../../../public/vercel.svg';
 
 const transitionVariants = {
 	item: {
@@ -130,7 +132,8 @@ export default function HeroSection() {
 									as="p"
 									className="mx-auto mt-8 max-w-2xl text-balance text-lg"
 								>
-									TailFlow organizes conversation into channels with threads, is realtime and uses AI to keep teams in sync.
+									TailFlow organizes conversation into channels with threads, is
+									realtime and uses AI to keep teams in sync.
 								</TextEffect>
 
 								<AnimatedGroup
@@ -273,7 +276,13 @@ export default function HeroSection() {
 									alt="Prisma Logo"
 								/>
 							</div>
-							<div className="flex"></div>
+							<div className="flex">
+								<img
+									className="mx-auto h-6 w-fit dark:invert"
+									src="https://html.tailus.io/blocks/customers/openai.svg"
+									alt="OpenAI Logo"
+								/>
+							</div>
 						</div>
 					</div>
 				</section>
