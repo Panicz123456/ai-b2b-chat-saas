@@ -107,7 +107,7 @@ export const HeroHeader = () => {
 									{user ? (
 										<>
 											<Button asChild size="sm">
-												<Link href="/dashboard">Dashboard</Link>
+												<Link href="/workspace">Dashboard</Link>
 											</Button>
 											<Button asChild size="sm" variant="outline">
 												<LogoutLink>Logout</LogoutLink>
