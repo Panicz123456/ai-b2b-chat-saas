@@ -1,5 +1,6 @@
+import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import { CreditCardIcon, LogOutIcon, UserIcon } from 'lucide-react';
-import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
+import { PortalLink } from '@kinde-oss/kinde-auth-nextjs/components';
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -65,22 +66,26 @@ export const UserNavbar = () => {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-          <DropdownMenuItem>
-            <UserIcon />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCardIcon />
-            Billing
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <LogoutLink>
-            <LogOutIcon />
-            Logout
-          </LogoutLink>
-        </DropdownMenuItem>
+					<DropdownMenuItem asChild>
+						<PortalLink>
+							<UserIcon />
+							Account
+						</PortalLink>
+					</DropdownMenuItem>
+					<DropdownMenuItem asChild>
+						<PortalLink>
+							<CreditCardIcon />
+							Billing
+						</PortalLink>
+					</DropdownMenuItem>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem asChild>
+					<LogoutLink>
+						<LogOutIcon />
+						Logout
+					</LogoutLink>
+				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
