@@ -1,19 +1,28 @@
-import { UserNavbar } from "@/modules/dashboard/ui/components/user-navbar"
-import { WorkspaceCreate } from "@/modules/dashboard/ui/components/workspace-create"
-import { WorkspaceList } from "@/modules/dashboard/ui/components/workspace-list"
+import { orpc } from "@/lib/orpc"
+import { getQueryClient, HydrateClient } from "@/lib/query/hydration"
 
-const Layout = ({ children }: { children: React.ReactNode}) => { 
+import { UserNavbar } from "@/modules/dashboard/ui/components/user-navbar"
+import { WorkspaceList } from "@/modules/dashboard/ui/components/workspace-list"
+import { WorkspaceCreate } from "@/modules/dashboard/ui/components/workspace-create"
+
+const Layout = async ({ children }: { children: React.ReactNode }) => { 
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery(orpc.workspace.list.queryOptions())
+
   return (
     <div className="flex w-full h-screen">
       <div className="flex h-full w-16 flex-col items-center bg-secondary py-3 px-2 border-r border-border">
-        <WorkspaceList />
-
+        <HydrateClient client={queryClient}>
+          <WorkspaceList />
+        </HydrateClient>
         <div className="mt-4">
           <WorkspaceCreate />
         </div>
-
         <div className="mt-auto">
-          <UserNavbar />
+          <HydrateClient client={queryClient}>
+            <UserNavbar />
+          </HydrateClient>
         </div>
       </div>
       {children}
