@@ -1,7 +1,11 @@
+"use client";
+
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import { CreditCardIcon, LogOutIcon, UserIcon } from 'lucide-react';
 import { PortalLink } from '@kinde-oss/kinde-auth-nextjs/components';
 
+import { orpc } from '@/lib/orpc';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -13,13 +17,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getAvatar } from '@/lib/get-avatar';
 
-const user = {
-	picture: 'https://avatars.githubusercontent.com/u/124599?v=4',
-	name: 'Panicz',
-};
 
 export const UserNavbar = () => {
+	const {data: {user} } = useSuspenseQuery(orpc.workspace.list.queryOptions())
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -30,12 +33,12 @@ export const UserNavbar = () => {
 				>
 					<Avatar>
 						<AvatarImage
-							src={user.picture}
+							src={getAvatar(user.picture, user.email!)}
 							alt="User Image"
 							className="object-cover"
 						/>
 						<AvatarFallback>
-							{user.name.slice(0, 2).toUpperCase()}
+							{user.given_name?.slice(0, 2).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 				</Button>
@@ -49,18 +52,18 @@ export const UserNavbar = () => {
 				<DropdownMenuLabel className="font-normal flex items-center gap-2 px-1 py-1.5 text-left">
 					<Avatar className="relative size-8 rounded-lg">
 						<AvatarImage
-							src={user.picture}
+							src={getAvatar(user.picture, user.email!)}
 							alt="User Image"
 							className="object-cover"
 						/>
 						<AvatarFallback>
-							{user.name.slice(0, 2).toUpperCase()}
+							{user.given_name?.slice(0, 2).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 					<div className="flex flex-col flex-1 text-left text-sm leading-tight">
-						<p className="truncate">{user.name}</p>
+						<p className="truncate">{user.given_name}</p>
 						<p className="text-muted-foreground truncate text-xs">
-							panicz@gmail.com
+							{user.email}
 						</p>
 					</div>
 				</DropdownMenuLabel>

@@ -1,9 +1,11 @@
 import { z } from 'zod'
+import {init, Organizations} from '@kinde/management-api-js'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { KindeOrganization, KindeUser } from '@kinde-oss/kinde-auth-nextjs'
 
 import { base } from '@/app/middlewares/base'
 import { requiredAuthMiddleware } from '@/app/middlewares/auth'
+import { CreateWorkspaceForm } from '@/modules/dashboard/schema'
 import { requiredWorkspaceMiddleware } from '@/app/middlewares/workspace'
 
 export const listWorkspaces = base
@@ -32,7 +34,7 @@ export const listWorkspaces = base
 
     const organizations = await getUserOrganizations()
 
-    if (!organizations) { 
+    if (!organizations) {
       throw errors.FORBIDDEN()
     }
 
@@ -46,3 +48,65 @@ export const listWorkspaces = base
       currentWorkspace: context.workspace!,
     }
   })
+
+export const createWorkspace = base
+  .use(requiredAuthMiddleware)
+  .use(requiredWorkspaceMiddleware)
+  .route({
+    method: "POST",
+    path: "/workspace",
+    summary: "Create a new workspace",
+    tags: ["workspace"]
+  })
+  .input(CreateWorkspaceForm)
+  .output(z.object({
+    orgCode: z.string(),
+    workspaceName: z.string(),
+  }))
+  .handler(async ({ context, errors, input }) => { 
+    init()
+
+    let data;
+
+    try {
+      data = await Organizations.createOrganization({
+        requestBody: { 
+          name: input.name,
+        }
+      })
+    } catch {
+      throw errors.FORBIDDEN();
+    }
+
+    if (!data.organization?.code) { 
+      throw errors.FORBIDDEN({ 
+        message: "Org code is not defined"
+      })
+    }
+
+    try {
+      await Organizations.addOrganizationUsers({ 
+        orgCode: data.organization.code,
+        requestBody: { 
+          users: [ 
+            { 
+              id: context.user.id,
+              roles: ["admin"],
+            }
+          ]
+        }
+      })
+    } catch {
+      throw errors.FORBIDDEN();
+    }
+
+    const { refreshTokens } = getKindeServerSession()
+    
+    await refreshTokens()
+
+    return { 
+      orgCode: data.organization.code,
+      workspaceName: input.name,
+    }
+  }
+)
