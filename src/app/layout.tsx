@@ -3,6 +3,7 @@ import "@/lib/orpc.server" // prerendering for ssr
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import { Providers } from "@/lib/providers";
 import { AuthProvider } from '@/components/AuthProvider';
 import { ThemeProvider } from '@/components/theme-provider';
 
@@ -41,7 +42,9 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						{children}
+						<Providers> {/* orpc tanstack query provider*/ } 
+							{children}
+						</Providers>
 					</ThemeProvider>
 				</body>
 			</html>
