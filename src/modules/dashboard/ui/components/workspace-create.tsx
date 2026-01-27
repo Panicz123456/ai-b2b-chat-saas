@@ -3,6 +3,7 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { PlusIcon } from 'lucide-react';
+import { isDefinedError } from '@orpc/client';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -57,8 +58,16 @@ export const WorkspaceCreate = () => {
 
 				onOpenChange(false)
 			},
-			onError: () => {
+			onError: (error) => {
+				if (isDefinedError(error)) {
+					if (error.code === 'RATE_LIMITED') {
+						toast.error(error.message);
+						return;
+					}
+					toast.error(error.message)
+				}
 				toast.error("Failed to create new workspace")
+				return;
 			}
 		})
 	)
