@@ -1,17 +1,14 @@
-import Image from "next/image"
+"use client"
 
+import Image from "next/image"
+import { useSuspenseQuery } from "@tanstack/react-query"
+
+import { orpc } from "@/lib/orpc"
+import { getAvatar } from "@/lib/get-avatar"
 import { Avatar, AvatarFallback} from "@/components/ui/avatar"
 
-const members = [
-  {
-    id: 1,
-    name: "Panicz",
-    imageUrl: "https://avatars.githubusercontent.com/u/124599?v=4",
-    email: "Panicz@gmail.com"
-  },
-]
-
 export const ChannelMembersList = () => {
+  const {data: {members}} = useSuspenseQuery(orpc.channel.list.queryOptions())
   return (
     <div className="space-y-0.5 py-1">
       {members.map((member) => ( 
@@ -19,18 +16,18 @@ export const ChannelMembersList = () => {
           <div className="relative">
             <Avatar className="size-8 relative">
               <Image
-                src={member.imageUrl}
+                src={getAvatar(member.picture ?? null, member.email!)}
                 alt="member Profile image"
                 className="object-cover"
                 fill
               />
               <AvatarFallback>
-                {member.name.charAt(0).toUpperCase()}
+                {member.full_name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>
           <div className="flex-1 min-h-0">
-            <p className="text-sm font-medium truncate">{member.name}</p>
+            <p className="text-sm font-medium truncate">{member.full_name}</p>
             <p className="text-sx text-muted-foreground truncate">{member.email}</p>
           </div>
         </div>
