@@ -1,11 +1,13 @@
 "use client";
 
+import Image from 'next/image';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import { CreditCardIcon, LogOutIcon, UserIcon } from 'lucide-react';
 import { PortalLink } from '@kinde-oss/kinde-auth-nextjs/components';
 
 import { orpc } from '@/lib/orpc';
+import { getAvatar } from '@/lib/get-avatar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -17,7 +19,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { getAvatar } from '@/lib/get-avatar';
 
 
 export const UserNavbar = () => {
@@ -51,7 +52,7 @@ export const UserNavbar = () => {
 			>
 				<DropdownMenuLabel className="font-normal flex items-center gap-2 px-1 py-1.5 text-left">
 					<Avatar className="relative size-8 rounded-lg">
-						<AvatarImage
+						<Image
 							src={getAvatar(user.picture, user.email!)}
 							alt="User Image"
 							className="object-cover"
