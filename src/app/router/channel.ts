@@ -24,7 +24,7 @@ export const createChannel = base
 	.input(CreateChannelForm)
 	.output(z.custom<Channel>())
 	.handler(async ({ input, context }) => {
-		const channel = prisma.channel.create({
+		const channel = await prisma.channel.create({
 			data: {
 				name: input.name,
 				workspaceId: context.workspace.orgCode,
