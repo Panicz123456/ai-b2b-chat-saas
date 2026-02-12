@@ -1,7 +1,13 @@
+"use client"
+
+import { useParams } from 'next/navigation';
+
 import { ChannelIdHeader } from '@/modules/dashboard/ui/components/channel-id-header';
+import { MessageInput } from '@/modules/dashboard/ui/components/message/message-input';
 import { ChannelMessageList } from '@/modules/dashboard/ui/components/channel-message-list';
 
 export const ChannelIdView = () => {
+	const {channelId} = useParams<{channelId: string, }>()
 	return (
 		<div className="flex h-screen w-full">
 			{/* Main Channel Area */}
@@ -11,7 +17,12 @@ export const ChannelIdView = () => {
 			  {/* Scrollable Message Area */}
         <div className="flex-1 overflow-hidden mb-4">
           <ChannelMessageList />
-        </div>
+				</div>
+
+				{/* Fixed Input */}
+				<div className='border-b bg-background p-4'>
+					<MessageInput channelId={channelId} />
+				</div>
 			</div>
 		</div>
 	);

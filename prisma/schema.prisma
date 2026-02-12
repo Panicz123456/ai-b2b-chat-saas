@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -8,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model Channel { 
+model Channel {
   id String @id @default(uuid())
 
   name String
@@ -19,5 +18,25 @@ model Channel {
   workspaceId String
   createdById String
 
+  message Message[]
+
   @@unique([workspaceId, name])
+}
+
+model Message {
+  id String @id @default(uuid())
+
+  content  String
+  imageUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId     String
+  authorEmail  String
+  authorName   String
+  authorAvatar String
+
+  channel      Channel? @relation(fields: [channelId], references: [id])
+  channelId    String?
 }
