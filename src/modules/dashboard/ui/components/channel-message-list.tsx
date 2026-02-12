@@ -1,4 +1,4 @@
-import { MessageItem } from "@/modules/dashboard/ui/components/message/MessageItem"
+import { MessageItem } from "@/modules/dashboard/ui/components/message/message-item"
 
 const messages = [ 
   { 

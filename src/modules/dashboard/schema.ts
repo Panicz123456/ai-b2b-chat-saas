@@ -37,3 +37,11 @@ export const CreateChannelForm = z.object({
 })
 
 export type CreateChannelFormType = z.infer<typeof CreateChannelForm>
+
+export const CreateMessageForm = z.object({ 
+  channelId: z.string(),
+  content: z.string(),
+  imageUrl: z.url().optional(),
+})
+
+export type CreateMessageFormType = z.infer<typeof CreateMessageForm>
