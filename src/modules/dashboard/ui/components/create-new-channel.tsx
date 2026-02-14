@@ -6,6 +6,7 @@ import { PlusIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { isDefinedError } from '@orpc/client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { orpc } from '@/lib/orpc';
@@ -34,6 +35,8 @@ import {
 } from '@/modules/dashboard/schema';
 
 export const CreateNewChannel = () => {
+	const router = useRouter()
+	const {workspaceId} = useParams<{workspaceId: string}>()
   const [open, onOpenChange] = useState(false);
   const queryClient = useQueryClient()
 
@@ -55,6 +58,8 @@ export const CreateNewChannel = () => {
 
 				form.reset();
 				onOpenChange(false);
+
+				router.push(`/workspace/${workspaceId}/channel/${newChannel.id}`)
 			},
 			onError: (error) => {
 				if (isDefinedError(error)) {
