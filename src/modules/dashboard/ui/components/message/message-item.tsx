@@ -1,24 +1,19 @@
+import { SafeContent } from '@/components/rich-text-editor/safe-content';
+import { Message } from '@/generated/prisma/client';
+import { getAvatar } from '@/lib/get-avatar';
 import Image from 'next/image';
 
 interface MessageItemProps {
-	id: number;
-	message: string;
-	date: Date;
-	avatar: string;
-	userName: string;
+	message: Message
 }
 
 export const MessageItem = ({
-	id,
-	message,
-	date,
-	avatar,
-	userName,
+	message
 }: MessageItemProps) => {
 	return (
 		<div className="flex space-x-3 relative p-3 rounded-lg group hover:bg-muted/50">
 			<Image
-				src={avatar}
+				src={getAvatar(message.authorAvatar, message.authorEmail)}
 				alt="User Image"
 				width={32}
 				height={32}
@@ -27,25 +22,23 @@ export const MessageItem = ({
 
 			<div className="flex-1 space-y-1 min-h-0">
 				<div className="flex items-center gap-x-2">
-					<p className="font-medium leading-none">{userName}</p>
+					<p className="font-medium leading-none">{message.authorName}</p>
 					<p className='text-xs text-muted-foreground leading-none'>
 						{new Intl.DateTimeFormat('en-GB', {
 							day: 'numeric',
 							month: 'short',
 							year: 'numeric',
-            }).format(date)}
+            }).format(message.createdAt)}
             {" "}
             {new Intl.DateTimeFormat('en-GB', {
               hour12: false,
               hour: "2-digit",
               minute: "2-digit",
-            }).format(date)}
+            }).format(message.createdAt)}
 					</p>
         </div>
         
-        <p className='text-xs break-work max-w-none'>
-          {message}
-        </p>
+				<SafeContent className='text-sm break-works prose dark:prose-invert max-w-none mark:text-primary' content={JSON.parse(message.content)} /> 
 			</div>
 		</div>
 	);
