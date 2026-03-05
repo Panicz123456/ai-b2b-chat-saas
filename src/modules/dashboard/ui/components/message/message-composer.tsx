@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 interface MessageComposerProps {
   value: string;
   onChange: (next: string) => void;
-  onSubmit: () => void
-  isSubmitting?: boolean; 
+  onSubmit: () => void | Promise<void>;
+  isSubmitting?: boolean;
 }
 
 export const MessageComposer = ({
@@ -22,7 +22,7 @@ export const MessageComposer = ({
         field={{ value, onChange }}
         sendButton={
           <Button
-            type="submit"
+            type="button"
             size="sm"
             onClick={onSubmit}
             disabled={isSubmitting}

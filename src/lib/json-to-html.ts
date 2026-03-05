@@ -6,12 +6,25 @@ export type JsonRichContent = JSONContent | string
 
 export function jsonToHtml(jsonContent: JsonRichContent): string {
   try {
-    const content =
-      typeof jsonContent === 'string' ? JSON.parse(jsonContent) : jsonContent
+    if (typeof jsonContent === 'string') {
+      try {
+        const parsed = JSON.parse(jsonContent)
+        return generateHTML(parsed, baseExtension)
+      } catch {
+        // If content is not valid JSON, render it as plain text
+        const escaped = jsonContent
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\n/g, '<br />')
 
-    return generateHTML(content, baseExtension)
+        return escaped
+      }
+    }
+
+    return generateHTML(jsonContent, baseExtension)
   } catch {
-    console.log('Error converting json to html')
+    // Silently fail and render nothing instead of spamming the console
     return ''
   }
 }

@@ -64,7 +64,7 @@ export const MessageInput = ({ channelId }: MessageInputProps) => {
                 <MessageComposer
                   value={field.value}
                   onChange={field.onChange}
-                  onSubmit={() => onSubmit(form.getValues())}
+                  onSubmit={form.handleSubmit(onSubmit)}
                   isSubmitting={createMessageMutation.isPending}
                 />
               </FormControl>
